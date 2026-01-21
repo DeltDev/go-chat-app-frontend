@@ -15,14 +15,4 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     },
   },
-
-  server: {
-    proxy: {
-      '/api': {
-        target: 'http://103.59.160.152:15015',
-        changeOrigin: true,
-        secure: false,      
-      }
-    }
-  }
 })
