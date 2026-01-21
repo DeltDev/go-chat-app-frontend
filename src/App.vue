@@ -30,8 +30,16 @@ watch(() => route.meta.index, (newIndex, oldIndex) => {
 
 <template>
   <ParticleBackground v-if="route.meta.showParticles" />
-  
-  <div class="flex h-screen flex-col items-center justify-center gap-8 z-10 relative overflow-hidden">
+
+  <div v-if="route.meta.fullscreen" class="h-screen w-full bg-gradient-to-br from-emerald-950 to-emerald-900">
+    <router-view v-slot="{ Component }">
+      <transition :name="transitionName" mode="out-in">
+        <component :is="Component" />
+      </transition>
+    </router-view>
+  </div>
+
+  <div v-else class="flex h-screen flex-col items-center justify-center gap-8 z-10 relative overflow-hidden">
     
     <h1 class="text-4xl font-bold transition-colors duration-300"
         :class="route.meta.showParticles ? 'text-white' : 'text-slate-900'">

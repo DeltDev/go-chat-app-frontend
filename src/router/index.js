@@ -1,38 +1,50 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Login from '../components/LoginForm.vue';
 import Register from '../components/RegisterForm.vue';
-import Dashboard from '../components/Dashboard.vue'; 
+import Dashboard from '../components/Dashboard.vue';
+import ChatRoom from '../components/ChatRoom.vue';
 import api from '../services/api';
 
 const routes = [
-    { 
-        path: '/login', 
+    {
+        path: '/login',
         name: 'Login',
         component: Login,
-        meta: { 
+        meta: {
             guestOnly: true,
-            showParticles: true, 
-            index: 1             
-        } 
-    },
-    { 
-        path: '/register', 
-        name: 'Register',
-        component: Register,
-        meta: { 
-            guestOnly: true,
-            showParticles: true, 
-            index: 2            
+            showParticles: true,
+            index: 1
         }
     },
-    { 
-        path: '/dashboard', 
+    {
+        path: '/register',
+        name: 'Register',
+        component: Register,
+        meta: {
+            guestOnly: true,
+            showParticles: true,
+            index: 2
+        }
+    },
+    {
+        path: '/dashboard',
         name: 'Dashboard',
         component: Dashboard,
-        meta: { 
+        meta: {
             requiresAuth: true,
-            showParticles: false, 
-            index: 3              
+            showParticles: false,
+            index: 3
+        }
+    },
+    {
+        path: '/chat/:roomId',
+        name: 'ChatRoom',
+        component: ChatRoom,
+        meta: {
+            requiresAuth: true,
+            showParticles: false,
+            fullscreen: true,
+            index: 4
         }
     },
 
@@ -52,7 +64,7 @@ router.beforeEach(async (to, from, next) => {
 
     let isAuthenticated = false;
     try {
-        await api.get('/check-auth'); 
+        await api.get('/check-auth');
         isAuthenticated = true;
     } catch (error) {
         isAuthenticated = false;
@@ -60,11 +72,11 @@ router.beforeEach(async (to, from, next) => {
 
     if (to.meta.requiresAuth && !isAuthenticated) {
         next('/login');
-    } 
+    }
 
     else if (to.meta.guestOnly && isAuthenticated) {
         next('/dashboard');
-    } 
+    }
 
     else {
         next();
